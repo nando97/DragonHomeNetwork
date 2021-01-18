@@ -2,8 +2,12 @@
 """
 This is a python script that handles and store message received by Gateway.
 """
-import sys, os, serial, signal, threading, time, json, math
+import sys, os, serial, signal, time, json
 from datetime import datetime
+
+from config_file import get_conf
+
+conf_file_path = "serial-to-data.conf"
 
 # callback functions
 def monitor(gateway_ser):
@@ -32,7 +36,7 @@ def monitor(gateway_ser):
                     # generate string of data 
 
                     # get current time at the time of receiving data
-                    now = datetime. now()
+                    now = datetime.now()
                     cur_time = now. strftime("%D %H:%M:%S")
 
                     # get run number
@@ -90,16 +94,27 @@ def main():
     # exit gracefully if sigint is received
     signal.signal(signal.SIGINT, signal_handler)
 
+    # get configuration from config file
+    config = {}
+    try:
+        conf_file = open(conf_file_path, 'r')
+        config = get_conf(conf_file)
+        conf_file.close()
+    except FileNotFoundError:
+        print("Cannot find configuration file - using default settings.")
+
     # setup the serial port based on the config file/or assignment
     gateway_ser = serial.Serial()
-    gateway_ser.baudrate = 9600 #config['baudrate']
-    gateway_ser.timeout = None  # set blocking
+    gateway_ser.baudrate = config['baud rate'] if 'baud rate' in config else 9600
+    gateway_ser.timeout = None
+    if 'time out' in config and config['time out'].lower() != 'none':
+        gateway_ser.timeout = config['time out']
 
     # check to see if the user inputed a serial port
     if len(sys.argv) == 2:
         gateway_ser.port = sys.argv[1]
     else:
-        gateway_ser.port = 'COM6' #config['serial port']
+        gateway_ser.port = config['serial port'] if 'serial port' in config else 'COM6' 
 
     # attempt to open the serial port
     try:
@@ -108,7 +123,7 @@ def main():
         print('could not find serial port: ' + gateway_ser.port)
         sys.exit(1)
 
-    print("Start Serial Monitor\n")
+    print("Starting Serial Monitor\n")
 
     # Function call to log data coming to serial port
     monitor(gateway_ser)
