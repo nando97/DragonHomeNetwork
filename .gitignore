@@ -4,3 +4,5 @@
 workspace.code-workspace
 /DataCollectionAndAnalysis/__pycache__/
 *.code-workspace
+*.DS_Store
+*.run_config.json
