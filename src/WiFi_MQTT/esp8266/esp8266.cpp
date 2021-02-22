@@ -27,6 +27,7 @@ void setup()
 {
     pinMode(LED_BUILTIN, OUTPUT); // configure LED on ESP8266 for debugging use
     Serial.begin(115200); // begin serial monitoring
+    // Serial.print("started serial monitor");
     setup_Wifi(); // configure wifi settings
     timeClient.begin(); // begin the NTP Client 
     MQTTclient.setServer(MQTTbroker, 1883); // start the MQTT client
@@ -58,19 +59,19 @@ void setup_Wifi()
     if (!WiFi.config(staticIP, gateway, subnet, primaryDNS, secondaryDNS))
     {
         //Serial.println("STA failed to configure");
-        error_blink_leds(200);
+        //error_blink_leds(200);
     }
 
-    //  Serial.print("Connecting...");
+    //Serial.print("Connecting...");
     WiFi.begin(SSID, SSID_PW);
     while (WiFi.status() != WL_CONNECTED)
     {
         delay(500);
-        //    Serial.print(".");
+        Serial.print(".");
     }
     digitalWrite(LED_BUILTIN, ESP8266_LED_ON);
-    //  Serial.print("Connected!\nIP Address: ");
-    //  Serial.println(WiFi.localIP());
+    //Serial.print("Connected!\nIP Address: ");
+    //Serial.println(WiFi.localIP());
 }
 
 // function used to reconnect to MQTT broker in case of a lost cnxn
@@ -87,15 +88,15 @@ void reconnect_to_broker()
         // Attempt to connect
         if (MQTTclient.connect(clientId.c_str()))
         {
-            //Serial.println("connected");
-            digitalWrite(LED_BUILTIN, ESP8266_LED_ON);
+           // Serial.println("connected");
+            //digitalWrite(LED_BUILTIN, ESP8266_LED_ON);
         }
         else
         {
             //Serial.print("failed, rc=");
             //Serial.print(MQTTclient.state());
             //Serial.println(" try again in 5 seconds");
-            error_blink_leds(400); // blink LEDS 4 times with 400ms as the delay
+            //error_blink_leds(400); // blink LEDS 4 times with 400ms as the delay
         }
     }
 }
