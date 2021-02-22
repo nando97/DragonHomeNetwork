@@ -12,8 +12,8 @@
 #define DATA_BUFFER_SIZE 200
 
 // WiFi settings
-#define SSID "FiOS-J9SJQ"
-#define SSID_PW "mate3epic3897wives"
+#define SSID "wifi-name-goes-here"
+#define SSID_PW "wifi-password-goes-here"
 #define HOSTNAME "ESP8266-1"
 
 // helper functions
