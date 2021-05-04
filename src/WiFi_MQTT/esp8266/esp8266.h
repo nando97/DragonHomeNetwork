@@ -1,24 +1,24 @@
-#include <NTPClient.h>
-#include <PubSubClient.h>
-#include <ESP8266WiFi.h>
-#include <WiFiUdp.h>
-
-// these are flipped for esp8266
-#define ESP8266_LED_OFF 1
-#define ESP8266_LED_ON 0
-#define UTC_OFFSET_SECONDS -18000 // offset for Atlantic Time (daylight savings)
-#define UPDATE_INTERVAL 360000 // ms, updates every minute
-#define MSG_BUFFER_SIZE 100 // bytes, for PubSubClient
+#define UTC_OFFSET_SECONDS -18000 /* offset for Atlantic Time (daylight savings) */
+#define UPDATE_INTERVAL 360000 /* ms, updates every minute */
+#define MSG_BUFFER_SIZE 100 /* bytes, for PubSubClient */
 #define DATA_BUFFER_SIZE 200
+#define ERR_LED 12
+#define ARDUINO_RX 2
+#define ARDUINO_TX 4
+#define TIMESTAMP_REQUEST "t"
+//#define DEBUG /* uncomment for debug prints */
 
-// WiFi settings
-#define SSID "wifi-name-goes-here"
-#define SSID_PW "wifi-password-goes-here"
+/* WiFi settings */
+#define SSID "Inty-plus"
+#define SSID_PW "U5t\\<a%>q=ikhwLY"
 #define HOSTNAME "ESP8266-1"
 
-// helper functions
+/* prototypes */
 void error_blink_leds(int ms);
 void setup_Wifi();
 void reconnect_to_broker();
-int get_topic_and_topic_msg(String ser_data);
-void timestamp_data();
+int get_topic_and_topic_msg(char *ser_data);
+void set_timestamp();
+void print_timestamp();
+void print_date();
+void print_time();

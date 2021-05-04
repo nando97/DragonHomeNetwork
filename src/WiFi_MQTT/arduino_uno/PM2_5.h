@@ -1,6 +1,5 @@
-#include <SoftwareSerial.h>
+#pragma once
 #include <Arduino.h>
-#define NETWORK_ID "DHN/0/0/"
 
 struct pms5003data {
   uint16_t framelen;
@@ -10,6 +9,4 @@ struct pms5003data {
   uint16_t unused;
   uint16_t checksum;
 };
-
 boolean readPMSdata(Stream *s, pms5003data *data);
-void publish_data(String topic, String data);
